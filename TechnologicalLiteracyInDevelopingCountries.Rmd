@@ -1,0 +1,261 @@
+---
+title: "Technological Literacy in Developing Countries"
+author: |
+  | Grant Cole, Madison Lane, Noah Polacek, Luis Rodriguez, Gnandi Tanghanwaye 
+  | Introduction to Data Science 
+  | University of Nebraska at Omaha
+date: December 15th, 2021
+
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr, warn.conflicts = F)
+library(ggplot2)
+library(corrplot)
+
+library(skimr)
+library(psych)
+library(stargazer)
+library(dplyr)
+library(ggplot2)
+library(ggridges)
+library(corrplot)
+library(ggpubr)
+options(dplyr.summarise.inform = FALSE)
+```
+
+\begin{abstract}
+As technology becomes more widespread, people in developing countries can finally learn about these modern practices; however, not everyone learns at the same rate. After analyzing the dataset ”UNICEF Global database on Information and communications technology (ICT) skills”, we will determine if there are any characteristics about our population that yield a higher propensity of success in completing certain technological challenges. From our results, we will experiment to check if such disparities are statistically significant—we will check to see if these actually cause a variation in successfully completing technological challenges. Consequently, we aim to identify certain inequalities so that these developing countries can react accordingly.
+\end{abstract}
+
+\section{1  Introduction}
+In this document, we will investigate the disparities that exist in technological development across the population of young adults in developing countries. This document utilizes data obtained directly through the United Nations Children's Fund (UNICEF) to investigate the degree to which wealth, region, and gender affect individuals' performance in completing basic tasks of technological literacy, tasks which are often taken for granted in developed nations. As there are many such variables that affect technological literacy of individuals worldwide, this topic necessitates a multifaceted investigation that utilizes various data science and statistical tools at our disposal. Additionally, we will consider various cultural factors that may influence these results. For example, many societies around the world differ greatly with their attitudes on gender inequality.   
+
+As we seek to analyze disparities between male and female performance on technological literacy tasks, we will find that a greater understanding of the cultural differences between these societies will help us to make sense of these outcomes and put our results in context. The “tasks” that will be the basis of this investigation will include (but are not limited to) the transfer of files between computer and other devices, the use of programming languages, sending an email. Ultimately, our investigation emphasizes the role that technology has on the lives of the citizens in various developing countries.
+
+\subsection{1.1 Project Outline}
+Section 2 of this project details the process that we took to obtain and clean the data for proper analysis; more specifically, we talk about the following: cleaning of the column names, revising the original CSV file so analysis could actually be done, and altering the mode of certain data in the CSV file. Next, in Section 3, we showcase a few plots which showcase correlations between certain technological skills, and we run a few regression plots to depict such relationships. We also give some general information regarding data visualizations given later. Finally, Section 4 gives such data visualizations and gives proper explanations of these.
+
+\subsection{1.2 Reproducability of the Document}
+This entire document is prepared using R [R-base] package knitr [R-knitr]. Those who wish to reproduce and utilize the contents of this document for further analysis are entirely free to do so with proper citation. The Rmd file is available [HERE.](https://raw.githubusercontent.com/noah-po/Data-Science-Project/main/Rough-Draft-Project.Rmd)
+
+\section{2 Description of UNICEF Technological Tasks Dataset}
+As detailed earlier, the dataset used for analysis was procured from the United Nations Children Fund (UNICEF) online database. This data comes from surveying those in developing countries from early 2017 to April 2021; it describes the percentage that young adults from developing countries (males and females aged between 15-24) have completed. Furthermore, characteristics such as the following are given: the socioeconomic status, residency in a rural or urban area, and the sex of these citizens . Such technological challenges include the following: copying and pasting files, sending emails, creating computer programs, etc.
+
+\section{3  Cleaning and Preparing the Data}
+The act of cleaning the data for analysis was a momentous venture for this project. Such tasks included creating a new file for the data to be usable, mending the ids, and altering the mode of certain data in our file. Here is a list summarizing our cleaning process:
+
+\subsection{3.1 Libraries Used to Read Dataset}  
+Firstly, our dataset was fairly messy to start with. Once we imported the data, we realized that our excel file originally wasn't very compatible with RStudio—there was a lot of garbage data embedded in our set! Nevertheless, the act of cleaning our data wasn't too complicated, but our first step was to convert our file into something that we could actually utilize. To do this, we downloaded the packages readxl **[R-readxl]** and xlsx **[R-xlsx]** so our excel file could be read properly in R. These packages ended up giving us a workable dataset; however, even after we used these resources, we couldn't effectively work with the data—the ids weren't indicative of the desired data.   
+
+\subsection{3.2 Mending Column Ids} 
+Therefore, after we could actually read our data into RStudio, our next step was to fix the issues regarding the dataset's ids. Originally, many of our columns had names that were either too complicated or were incomprehensible; therefore, we ended up renaming every column and gave it a corresponding id. These columns were mostly the tasks that the population completed. Furthermore, we created a legend so these ids could be decipherable. After renaming all of our columns and assigning them a unique id, we then removed every column that had many NAs inhabited in it. This ended up bringing our rows from 64 to 48–and this gave us an optimal dataset to work with. In the following section (which is isolated to showcase its importance), we give the table that showcases the old and new ids.
+
+\subsection{3.3 Technological Task ID Key}
+The original dataset contained information about individuals' performance completing different technological tasks. As a result, the set had column names that corresponded to the tasks being assessed, which made it difficult to illustrate findings as the data visualizations were crowded. While we could have potentially worked with the old ids, it would've been fairly confusing (and inefficient) to use these to work with the data. Consequently, we changed the ids of each task to the ids shown in the table given in Table 1 below.
+
+```{r, echo = F, fig.allign = "center"}
+library(knitr)
+library(reshape2)
+CleanedData <- read.csv("https://raw.githubusercontent.com/noah-po/Data-Science-Project/main/CleanedData.csv", header=TRUE)
+FurtherCleanedData <- read.csv("https://raw.githubusercontent.com/noah-po/Data-Science-Project/main/FurtherCleanedData.csv")
+otherCols <- c(6,7,8,9,10,11,12,13,14)
+smaller <- subset(CleanedData, select = otherCols)
+old_id <- data.frame(reshape2::melt(colnames(smaller),value.name = "Technological Tasks"))
+CleanedData <- read.csv("https://raw.githubusercontent.com/noah-po/Data-Science-Project/main/CleanedData.csv", header=TRUE)
+FurtherCleanedData <- read.csv("https://raw.githubusercontent.com/noah-po/Data-Science-Project/main/FurtherCleanedData.csv")
+
+
+
+otherCols <- c(6,7,8,9,10,11,12,13,14)
+smaller <- subset(FurtherCleanedData, select = otherCols)
+
+
+newID <- data.frame(reshape2::melt((colnames(smaller)), value.name = "NewID"))
+
+newID$oldID = old_id
+kable(newID)
+```
+\begin{center}
+Table 1 - Technological Tasks Before and After Cleaning
+\end{center}
+
+\subsection{3.4 Changing Modes}  
+Lastly, after we cleaned up the column names and gave them unique ids, we believed that we were ready to use the data; however, as we began to analyze certain variables, we ran into a fairly large issue—all numbers in the dataset were registering as strings instead of numeric values. Consequently, we couldn't calculate anything meaningful with these values, and our next step was to change the mode of columns that incorrectly described numeric values as strings. This issue was fixed by highlighting all affected columns' values in the cleaned CSV file and then changing the mode from 'general' to numeric. After this fix, our dataset was properly cleaned and ready for analysis.
+
+\section{4  Correlation Analysis}
+The dataset used for analysis contains a myriad of characteristics about our population, such as the following: the gender, geography, and socioeconomic status of young adults in these developing countries. Consequently, we felt it to be appropriate to include several data visualizations depicting these characteristics and the corresponding ability to complete technological challenges. 
+
+\subsection{4.1 Correlation Plots} 
+In this section, we explore the correlations between each characteristic and skill. Furthermore, we showcase each characteristic by isolating and checking to see if there's any correlation with completing certain tasks; below, we amalgamated these characteristics together in the following correlation plot to get the bigger picture of the state of technology in these countries.   
+
+To further demonstrate the correlations mentioned above, we used graphs showing the best fit lines between those highly correlated skills, as well as their correlation coefficients:
+
+```{r, echo = F, message = F, warning = F, out.width = "50%", }
+
+ggplot(FurtherCleanedData, aes(C4,C7)) + geom_point() + geom_smooth(method = "lm", se=FALSE) +
+  stat_regline_equation(label.y = 50, aes(label = ..rr.label..))
+ggplot(FurtherCleanedData, aes(C1,C8)) + geom_point() + geom_smooth(method = "lm", se=FALSE) +
+  stat_regline_equation(label.y = 50, aes(label = ..rr.label..))
+
+
+```
+
+\begin{center}
+Figure 1 - Regression Line between Sending an Email and Creating an Online Presentation / between Moving a File and Transferring a File between Computers
+\end{center}
+```{r, echo = F, message = F, warning = F, out.width = "50%", fig.show="hold"}
+
+ggplot(FurtherCleanedData, aes(C1,C2)) + geom_point() + geom_smooth(method = "lm", se=FALSE) +
+  stat_regline_equation(label.y = 50, aes(label = ..rr.label..))
+ggplot(FurtherCleanedData, aes(C3,C7)) + geom_point() + geom_smooth(method = "lm", se=FALSE) +
+  stat_regline_equation(label.y = 50, aes(label = ..rr.label..))
+
+```
+\begin{center}
+Figure 2 - Regression Line between Copying a File and Using a Copy and Paste Tool / Sending an Email and Creating a Presentation
+\end{center}
+
+As seen in the figures above, we can see that there is a very high correlation ($R^2$ value greater than $0.90$) between certain skills. This could be sufficient to show that there is evidence in favor of the claim that bad performance on a task implies bad performance on the rest of the tasks and that good performance on a task implies good performance on the rest of the tasks. However, we cannot make that conclusion from just a few observations, so we must explore the correlation between all tasks and explore the median correlation between any two tasks.
+
+To test the aforementioned claim, we construct a pair-wise correlation matrix below illustrating the relationship between performances on different tasks and calculated a median correlation coefficient of 0.890 and a minimum of 0.737, which on average, indicates a strong positive linear relationship between tasks:
+
+```{r}
+trimmedData = select(FurtherCleanedData, -1:-5, -21,-22,-23)
+correlationMatTrimmed <- trimmedData[,1:9]
+correlationMatTrimmed <- cor(correlationMatTrimmed)
+
+min(correlationMatTrimmed)
+
+stargazer(correlationMatTrimmed, type="text", title="Pairwise Correlation Results", out="table2.txt")
+```
+\begin{center}
+Table 2 - Visualization depicting a matrix that illustrates the various correlations (using the R values) between each of the skills in the original dataset.
+\end{center}
+
+```{r, echo = F}
+corrplot(correlationMatTrimmed, title = "Skill Correlation Plot", method = "pie", type = "upper")
+```
+\begin{center}
+Figure 1 - To further highlight the correlation between each task, a colorful visual was created that represents the correlation coefficients as pie charts that are darker the closer a correlation coefficient is to 1 or -1. This visual is intended to help the viewer determine which skills tend to correlate with other skills.
+\end{center}
+
+The visualizations above show skill pairs that are strongly correlated with each other, including **C1** and **C8** (copying/moving folders and transferring files to different devices), **C7** and **C4** (using formulas in a spreadsheet and creating an audio/visual presentation), **C1** and **C2** (copying/moving folders and using copy-paste), and **C7** and **C3** (creating an audio visual presentation and using multimedia attachments in an email).    
+
+ As **C1** and **C8** are very strongly correlated (with an $R$ value of 0.970), we can conclude that there is a strong linear correlation between possessing the ability to copy and move folders, and transfer files to different devices. Since both of these tasks are very related (as they both have to do with file transfer), it seems reasonable that individuals scoring high in one of these tasks would be likely to score highly in another. Similarly, **C7** and **C4** also share a heavy correlation ($R$ = 0.967), which suggests that individuals who are more capable of using spreadsheet formulas tend to score higher in their ability to create audio/visual presentations. Plainly, a casual observer may expect these results, again through similar intuition, as both of these skills share a common theme of the ability to present information to outside parties.
+
+\section{5  Results}
+After exploring the correlation between the different technological tasks, we found that they are, in general, highly correlation and thus, we will assume that that patterns discovered in this section will hold true for the majority of the tasks. 
+
+In this section, we showcase a few data visualizations depicting the ability of citizens in developing countries to accomplish these technological tasks. Furthermore, we will give an overview of the discoveries made.
+
+\subsection{5.1  Gender and Geographic Factors}
+In this subsection, we focus on how gender affects an individual's ability to complete a certain task. We believed that combining the geographic region and the genders of the sample would be a good way to unmask relationships between these characteristics:
+```{r, echo = F}
+library(dplyr)
+library(ggplot2)
+##Change the location of FurtherCleanedData.csv
+FurtherCleanedData <- read.csv("https://raw.githubusercontent.com/noah-po/Data-Science-Project/main/FurtherCleanedData.csv")
+
+Success.avg = FurtherCleanedData %>%group_by(Region, Sex)%>%
+  summarize(Percent = mean(C1))##
+ggplot(Success.avg) +  
+  theme(plot.title = element_text(hjust = 0.5)) + xlab("") + geom_bar(aes(x=Sex, y=Percent, fill = Sex), stat='identity') + facet_wrap(~Region)
+```
+\begin{center}
+Figure 2 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronym analyzing are the following: **EAP** represents East Asia and the Pacific, **LAC** represents Latin America and the Caribbean, **MENA** represents North Africa and the Middle East, **SA** represents South America, and finally, **SSA** represents Sub-Saharan Africa. In this specific task, females perform better in the East Asia & Pacific and the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
+\end{center}
+
+
+\subsection{5.2  Socioeconomic Factors and Development}
+In this subsection, we primarily focus on the impact that an individual's socioeconomic status has on their ability to complete technological tasks. More specifically, this section focuses on the wealth quintile of these individuals.
+
+The following visualizations are all based on wealth quintiles of citizens which were shortened to **c12**, **c13**, **c14**, **c15**, and **c16** as shown below:
+```{r, echo = F}
+otherCols <- c(18,19,20,21,22)
+new_smaller <- subset(CleanedData, select = otherCols)
+
+
+
+
+otherCols <- c(17,18,19,20,21)
+old_id <- data.frame(reshape2::melt(colnames(new_smaller),value.name = "Technological Tasks"))
+
+new_smaller <- subset(FurtherCleanedData, select = otherCols)
+
+newID <- data.frame(reshape2::melt((colnames(new_smaller)), value.name = "NewID"))
+
+newID$oldID = old_id
+kable(newID)
+
+```
+\begin{center}
+Table 4 - Key of Wealth Quantiles
+\end{center}
+
+```{r, echo = F, message = F}
+library(dplyr)
+whichOnes<- c(4,17,18,19,20,21)
+someClean <- subset(FurtherCleanedData, select = whichOnes)
+melted <- melt(someClean, id = "Development")
+melted <- melted %>%group_by(Development, variable)%>%
+  summarize(Percent = mean(value))##
+
+ggplot(melted, aes(variable, Percent, fill = Development)) + geom_bar(stat = "identity") +  
+  theme(plot.title = element_text(hjust = 0.5)) + xlab("Wealth Quintile") + facet_wrap(~Development)
+
+```
+
+\begin{center}
+Figure 3 - The visualization above shows the percentage of individuals that completed at least one task successfully. This illustrates the relationship between wealth quintile and performance on tasks.
+\end{center}
+
+The visualization above seems to highlight the positive correlation between wealth quantile and performance. This leads us to question whether this trend holds true for all regions:
+
+```{r, echo = F}
+library(dplyr)
+
+whichOnes<- c(2,17,18,19,20,21)
+someClean <- subset(FurtherCleanedData, select = whichOnes)
+melted <- melt(someClean, id= "Region")
+melted <- melted %>%group_by(Region, variable)%>%
+  summarize(Percent = mean(value))##
+ggplot(melted, aes(variable, Percent), xlab="Percentages", ylab = "Region") + geom_point() + facet_wrap(~Region) +  
+  theme(plot.title = element_text(hjust = 0.5)) + xlab("Wealth Quintile")
+
+```
+\begin{center}
+Figure 4 - The plot above shows the percentage of individuals who completed at least one task from each quintile.  
+\end{center}
+
+The plots above show that there seems to be an exception to the relationship between wealth quintile and performance that was stated earlier, since the Latin America & The Caribbean region seems to have a level performance throughout the different quantiles–there seems to be little correlation between an individual's quantile and their performance in this specific region.
+
+To further analyze this trend, we will explore how sex affects performance in less developed countries and least developed countries, where least developed have a greater percentage of individuals in the lower quintiles when compared to less developed countries:
+
+```{r, echo = F, message = F}
+ggplot(FurtherCleanedData, aes(C1, C9, colour = Development)) + 
+geom_point() + geom_smooth(method = "lm", se=FALSE) + facet_wrap(~Sex)
+
+```
+\begin{center}
+Figure 5 - The plot above shows the percentage of males and females who completed at least one task from less developed and least developed countries.  
+\end{center}
+
+The figure above shows that males and females both perform better in the less developed when compared to the least developed countries. This trend makes intuitive sense as it was discovered earlier that individuals in wealthier areas tend to perform better than individuals in poorer areas, since wealth quintile and performance have a positive relationship. However, this illustration is important since it shows that poorer countries also perform worse than wealthier countries, which was the same pattern that arose when exploring wealth quintiles in different regions.
+
+\section{6  Conclusion and Future Work}
+In this project, we explored technological skills amongst people ages 15-24 from developing countries; furthermore, we analyzed data directly from UNICEF to look into how sex, wealth, and geographical location impacts young adults’ technological abilities. More specifically, we were able to look into the correlation between different tasks and how gender and socioeconomic factors contributed to a person’s ability to complete these tasks. Different regions had different trends in their abilities to complete different tasks. We were able to see that most regions had a large correlation between wealth and the ability to complete tasks.
+
+Future work can be done to explore why the relationships and patterns discovered in this paper exist. For example, it was discovered in this paper that males in South America and Sub-Saharan Africa seem to perform better than females, while the opposite holds true for Middle East and North-Africa, Latin America & The Caribbean, and East Asia & The Pacific. There are many possible factors that can be causing these patterns, such as cultural or regional differences. Additionally, we found that individuals in the Latin America & The Caribbean region seem to perform well on tasks regardless of their quintile. This anomaly may be important to explore in the future as it may be used to promote equality in other regions of the world.
+
+
+\section{References}
+[1]  UNICEF Database: Information communication technology skills, UNICEF, New York City, USA, https://data.unicef.org/resources/dataset/learning-and-skills/, 2021  
+[2]  R Core Team, R: A Language and Environment for Statistical Computing, R Foundation for Statistical Computing, Vienna, Austria, http://www.R-project.org/, 2014  
+[3]  Yihui Xieknitr:  A  general-purpose  package  for  dynamic  report  generation  in  R,http://yihui.name/knitr/, 2014
+[4]  Wickham H: ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, https://ggplot2.tidyverse.org, 2016
+
