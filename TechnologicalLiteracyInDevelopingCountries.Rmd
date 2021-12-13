@@ -141,7 +141,7 @@ Table 2 - Visualization depicting a matrix that illustrates the various correlat
 corrplot(correlationMatTrimmed, method = "pie", type = "upper")
 ```
 \begin{center}
-Figure 1 - To further highlight the correlation between each task, a colorful visual was created that represents the correlation coefficients as pie charts that are darker the closer a correlation coefficient is to 1 or -1. This visual is intended to help the viewer determine which skills tend to correlate with other skills.
+Figure 3 - To further highlight the correlation between each task, a colorful visual was created that represents the correlation coefficients as pie charts that are darker the closer a correlation coefficient is to 1 or -1. This visual is intended to help the viewer determine which skills tend to correlate with other skills.
 \end{center}
 
 The visualizations above show skill pairs that are strongly correlated with each other, including **C1** and **C8** (copying/moving folders and transferring files to different devices), **C7** and **C4** (using formulas in a spreadsheet and creating an audio/visual presentation), **C1** and **C2** (copying/moving folders and using copy-paste), and **C7** and **C3** (creating an audio visual presentation and using multimedia attachments in an email).    
@@ -155,6 +155,7 @@ In this section, we showcase a few data visualizations depicting the ability of 
 
 \subsection{5.1  Gender and Geographic Factors}
 In this subsection, we focus on how gender affects an individual's ability to complete a certain task. We believed that combining the geographic region and the genders of the sample would be a good way to unmask relationships between these characteristics:
+
 ```{r, echo = F}
 library(dplyr)
 library(ggplot2)
@@ -167,7 +168,7 @@ ggplot(Success.avg) +
   theme(plot.title = element_text(hjust = 0.5)) + xlab("") + geom_bar(aes(x=Sex, y=Percent, fill = Sex), stat='identity') + facet_wrap(~Region)
 ```
 \begin{center}
-Figure 2 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronym analyzing are the following: **EAP** represents East Asia and the Pacific, **LAC** represents Latin America and the Caribbean, **MENA** represents North Africa and the Middle East, **SA** represents South America, and finally, **SSA** represents Sub-Saharan Africa. In this specific task, females perform better in the East Asia and Pacific, and the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
+Figure 4 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronym analyzing are the following: EAP represents East Asia and the Pacific, LAC represents Latin America and the Caribbean, MENA represents North Africa and the Middle East, SA represents South America, and finally, SSA represents Sub-Saharan Africa. In this specific task, females perform better in the East Asia and Pacific, and the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
 \end{center}
 
 
@@ -211,7 +212,7 @@ ggplot(melted, aes(variable, Percent, fill = Development)) + geom_bar(stat = "id
 ```
 
 \begin{center}
-Figure 3 - The visualization above shows the percentage of individuals that completed at least one task successfully. This illustrates the relationship between wealth quintile and performance on tasks.
+Figure 5 - The visualization above shows the percentage of individuals that completed at least one task successfully. This illustrates the relationship between wealth quintile and performance on tasks.
 \end{center}
 
 The visualization above seems to highlight the positive correlation between wealth quantile and performance. This leads us to question whether this trend holds true for all regions:
@@ -229,7 +230,7 @@ ggplot(melted, aes(variable, Percent), xlab="Percentages", ylab = "Region") + ge
 
 ```
 \begin{center}
-Figure 4 - The plot above shows the percentage of individuals who completed at least one task from each quintile.  
+Figure 6 - The plot above shows the percentage of individuals who completed at least one task from each quintile.  
 \end{center}
 
 The plots above show that there seems to be an exception to the relationship between wealth quintile and performance that was stated earlier, since the Latin America & The Caribbean region seems to have a level performance throughout the different quantiles–there seems to be little correlation between an individual's quantile and their performance in this specific region.
@@ -242,7 +243,7 @@ geom_point() + geom_smooth(method = "lm", se=FALSE) + facet_wrap(~Sex)
 
 ```
 \begin{center}
-Figure 5 - The plot above shows the percentage of males and females who completed at least one task from less developed and least developed countries.  
+Figure 7 - The plot above shows the percentage of males and females who completed at least one task from less developed and least developed countries.  
 \end{center}
 
 The figure above shows that males and females both perform better in the less developed when compared to the least developed countries. This trend makes intuitive sense as it was discovered earlier that individuals in wealthier areas tend to perform better than individuals in poorer areas, since wealth quintile and performance have a positive relationship. However, this illustration is important since it shows that poorer countries also perform worse than wealthier countries, which was the same pattern that arose when exploring wealth quintiles in different regions.
