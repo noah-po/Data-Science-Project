@@ -167,7 +167,7 @@ ggplot(Success.avg) +
   theme(plot.title = element_text(hjust = 0.5)) + xlab("") + geom_bar(aes(x=Sex, y=Percent, fill = Sex), stat='identity') + facet_wrap(~Region)
 ```
 \begin{center}
-Figure 2 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronym analyzing are the following: **EAP** represents East Asia and the Pacific, **LAC** represents Latin America and the Caribbean, **MENA** represents North Africa and the Middle East, **SA** represents South America, and finally, **SSA** represents Sub-Saharan Africa. In this specific task, females perform better in the East Asia & Pacific and the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
+Figure 2 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronym analyzing are the following: **EAP** represents East Asia and the Pacific, **LAC** represents Latin America and the Caribbean, **MENA** represents North Africa and the Middle East, **SA** represents South America, and finally, **SSA** represents Sub-Saharan Africa. In this specific task, females perform better in the East Asia and Pacific, and the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
 \end{center}
 
 
