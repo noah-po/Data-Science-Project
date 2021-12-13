@@ -138,7 +138,7 @@ Table 2 - Visualization depicting a matrix that illustrates the various correlat
 \end{center}
 
 ```{r, echo = F}
-corrplot(correlationMatTrimmed, title = "Skill Correlation Plot", method = "pie", type = "upper")
+corrplot(correlationMatTrimmed, method = "pie", type = "upper")
 ```
 \begin{center}
 Figure 1 - To further highlight the correlation between each task, a colorful visual was created that represents the correlation coefficients as pie charts that are darker the closer a correlation coefficient is to 1 or -1. This visual is intended to help the viewer determine which skills tend to correlate with other skills.
