@@ -124,12 +124,11 @@ As seen in the figures above, we can see that there is a very high correlation (
 
 To test the aforementioned claim, we construct a pair-wise correlation matrix below illustrating the relationship between performances on different tasks and calculated a median correlation coefficient of 0.890 and a minimum of 0.737, which on average, indicates a strong positive linear relationship between tasks:
 
-```{r}
+```{r, echo = F, message = F, warning = F}
 trimmedData = select(FurtherCleanedData, -1:-5, -21,-22,-23)
 correlationMatTrimmed <- trimmedData[,1:9]
 correlationMatTrimmed <- cor(correlationMatTrimmed)
 
-min(correlationMatTrimmed)
 
 stargazer(correlationMatTrimmed, type="text", title="Pairwise Correlation Results", out="table2.txt")
 ```
@@ -149,9 +148,9 @@ The visualizations above show skill pairs that are strongly correlated with each
  As **C1** and **C8** are very strongly correlated (with an $R$ value of 0.970), we can conclude that there is a strong linear correlation between possessing the ability to copy and move folders, and transfer files to different devices. Since both of these tasks are very related (as they both have to do with file transfer), it seems reasonable that individuals scoring high in one of these tasks would be likely to score highly in another. Similarly, **C7** and **C4** also share a heavy correlation ($R$ = 0.967), which suggests that individuals who are more capable of using spreadsheet formulas tend to score higher in their ability to create audio/visual presentations. Plainly, a casual observer may expect these results, again through similar intuition, as both of these skills share a common theme of the ability to present information to outside parties.
 
 \section{5  Results}
-After exploring the correlation between the different technological tasks, we found that they are, in general, highly correlation and thus, we will assume that that patterns discovered in this section will hold true for the majority of the tasks. 
+After exploring the correlation between the different technological tasks, we found that they are, in general, highly correlated and thus, we will assume that the patterns discovered in this section will hold true for the majority of the tasks. 
 
-In this section, we showcase a few data visualizations depicting the ability of citizens in developing countries to accomplish these technological tasks. Furthermore, we will give an overview of the discoveries made.
+In this section, we showcase a few data visualizations depicting the ability of individuals in developing countries to accomplish these technological tasks. Furthermore, we will give an overview of the discoveries made.
 
 \subsection{5.1  Gender and Geographic Factors}
 In this subsection, we focus on how gender affects an individual's ability to complete a certain task. We believed that combining the geographic region and the genders of the sample would be a good way to unmask relationships between these characteristics:
@@ -168,14 +167,16 @@ ggplot(Success.avg) +
   theme(plot.title = element_text(hjust = 0.5)) + xlab("") + geom_bar(aes(x=Sex, y=Percent, fill = Sex), stat='identity') + facet_wrap(~Region)
 ```
 \begin{center}
-Figure 4 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronym analyzing are the following: EAP represents East Asia and the Pacific, LAC represents Latin America and the Caribbean, MENA represents North Africa and the Middle East, SA represents South America, and finally, SSA represents Sub-Saharan Africa. In this specific task, females perform better in the East Asia and Pacific, and the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
+Figure 4 - This visualization depicts the percentage of people of ages 15-24 who successfully copied or moved a file or folder; furthermore, the region acronyms presented are the following: EAP represents East Asia and the Pacific, LAC represents Latin America and the Caribbean, MENA represents North Africa and the Middle East, SA represents South America, and finally, SSA represents Sub-Saharan Africa. 
 \end{center}
 
+In this specific task, females perform better in the East Asia and Pacific, as well as the Latin America and the Caribbean regions. On the other hand, males perform drastically better in South Asia and Sub-Saharan Africa.
 
 \subsection{5.2  Socioeconomic Factors and Development}
 In this subsection, we primarily focus on the impact that an individual's socioeconomic status has on their ability to complete technological tasks. More specifically, this section focuses on the wealth quintile of these individuals.
 
-The following visualizations are all based on wealth quintiles of citizens which were shortened to **c12**, **c13**, **c14**, **c15**, and **c16** as shown below:
+The following visualizations are all based on wealth quintiles of citizens which were shortened to **C12**, **C13**, **C14**, **C15**, and **C16** as shown below:
+
 ```{r, echo = F}
 otherCols <- c(18,19,20,21,22)
 new_smaller <- subset(CleanedData, select = otherCols)
@@ -195,7 +196,7 @@ kable(newID)
 
 ```
 \begin{center}
-Table 4 - Key of Wealth Quantiles
+Table 4 - Key of Wealth Quintiles
 \end{center}
 
 ```{r, echo = F, message = F}
@@ -215,7 +216,7 @@ ggplot(melted, aes(variable, Percent, fill = Development)) + geom_bar(stat = "id
 Figure 5 - The visualization above shows the percentage of individuals that completed at least one task successfully. This illustrates the relationship between wealth quintile and performance on tasks.
 \end{center}
 
-The visualization above seems to highlight the positive correlation between wealth quantile and performance. This leads us to question whether this trend holds true for all regions:
+The visualization above seems to highlight the positive correlation between wealth quintile and performance. This leads us to question whether this trend holds true for all regions:
 
 ```{r, echo = F}
 library(dplyr)
@@ -230,10 +231,10 @@ ggplot(melted, aes(variable, Percent), xlab="Percentages", ylab = "Region") + ge
 
 ```
 \begin{center}
-Figure 6 - The plot above shows the percentage of individuals who completed at least one task from each quintile.  
+Figure 6 - This visual shows the percentage of individuals who completed at least one task from each quintile.  
 \end{center}
 
-The plots above show that there seems to be an exception to the relationship between wealth quintile and performance that was stated earlier, since the Latin America & The Caribbean region seems to have a level performance throughout the different quantiles–there seems to be little correlation between an individual's quantile and their performance in this specific region.
+The plots above show that there seems to be an exception to the relationship between wealth quintile and performance that was stated earlier, since the Latin America & The Caribbean region seems to have a level performance throughout the different quintiles–there seems to be little correlation between an individual's quintile and their performance in this specific region.
 
 To further analyze this trend, we will explore how sex affects performance in less developed countries and least developed countries, where least developed have a greater percentage of individuals in the lower quintiles when compared to less developed countries:
 
@@ -251,12 +252,15 @@ The figure above shows that males and females both perform better in the less de
 \section{6  Conclusion and Future Work}
 In this project, we explored technological skills amongst people ages 15-24 from developing countries; furthermore, we analyzed data directly from UNICEF to look into how sex, wealth, and geographical location impacts young adults’ technological abilities. More specifically, we were able to look into the correlation between different tasks and how gender and socioeconomic factors contributed to a person’s ability to complete these tasks. Different regions had different trends in their abilities to complete different tasks. We were able to see that most regions had a large correlation between wealth and the ability to complete tasks.
 
-Future work can be done to explore why the relationships and patterns discovered in this paper exist. For example, it was discovered in this paper that males in South America and Sub-Saharan Africa seem to perform better than females, while the opposite holds true for Middle East and North-Africa, Latin America & The Caribbean, and East Asia & The Pacific. There are many possible factors that can be causing these patterns, such as cultural or regional differences. Additionally, we found that individuals in the Latin America & The Caribbean region seem to perform well on tasks regardless of their quintile. This anomaly may be important to explore in the future as it may be used to promote equality in other regions of the world.
+Future work can be done to explore why the relationships and patterns discovered in this paper exist. For example, it was discovered in this paper that males in South America and Sub-Saharan Africa seem to perform better than females, while the opposite holds true for Middle East & North-Africa, Latin America & The Caribbean, and East Asia & The Pacific. There are many possible factors that can be causing these patterns, such as cultural or regional differences. Additionally, we found that individuals in the Latin America & The Caribbean region seem to perform well on tasks regardless of their quintile. This anomaly may be important to explore in the future as it may be used to promote equality in other regions of the world.
 
 
 \section{References}
-[1]  UNICEF Database: Information communication technology skills, UNICEF, New York City, USA, https://data.unicef.org/resources/dataset/learning-and-skills/, 2021  
-[2]  R Core Team, R: A Language and Environment for Statistical Computing, R Foundation for Statistical Computing, Vienna, Austria, http://www.R-project.org/, 2014  
+[1]  UNICEF Database: Information communication technology skills, UNICEF, New York City, USA, https://data.unicef.org/resources/dataset/learning-and-skills/, 2021 
+
+[2]  R Core Team, R: A Language and Environment for Statistical Computing, R Foundation for Statistical Computing, Vienna, Austria, http://www.R-project.org/, 2014
+
 [3]  Yihui Xieknitr:  A  general-purpose  package  for  dynamic  report  generation  in  R,http://yihui.name/knitr/, 2014
+
 [4]  Wickham H: ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, https://ggplot2.tidyverse.org, 2016
 
