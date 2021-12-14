@@ -29,7 +29,7 @@ options(dplyr.summarise.inform = FALSE)
 ```
 
 \begin{abstract}
-As technology becomes more widespread, people in developing countries can finally learn about these modern practices; however, not everyone learns at the same rate. After analyzing the dataset ”UNICEF Global database on Information and communications technology (ICT) skills”, we will determine if there are any characteristics about our population that yield a higher propensity of success in completing certain technological challenges. From our results, we will experiment to check if such disparities are statistically significant—we will check to see if these actually cause a variation in successfully completing technological challenges. Consequently, we aim to identify certain inequalities so that these developing countries can react accordingly.
+As technology becomes more widespread, people in developing countries can finally learn about these modern practices; however, not everyone learns at the same rate. After analyzing the dataset ”UNICEF Global database on Information and communications technology (ICT) skills”, we will determine if there are any characteristics about our population that yield a higher propensity of success in completing certain technological challenges. From our results, we will experiment to check if such disparities are statistically significant—we will check to see if these actually cause a variation in successfully completing technological challenges. as a result, we aim to identify certain inequalities so that these developing countries can react accordingly.
 \end{abstract}
 
 \section{1  Introduction}
@@ -85,7 +85,7 @@ Table 1 - Technological Tasks Before and After Cleaning
 \end{center}
 
 \subsection{3.4 Changing Modes}  
-Lastly, after we cleaned up the column names and gave them unique ids, we believed that we were ready to use the data; however, as we began to analyze certain variables, we ran into a fairly large issue—all numbers in the dataset were registering as strings instead of numeric values. Consequently, we couldn't calculate anything meaningful with these values, and our next step was to change the mode of columns that incorrectly described numeric values as strings. This issue was fixed by highlighting all affected columns' values in the cleaned CSV file and then changing the mode from 'general' to numeric. After this fix, our dataset was properly cleaned and ready for analysis.
+Lastly, after we cleaned up the column names and gave them unique ids, we believed that we were ready to use the data; however, as we began to analyze certain variables, we ran into a fairly large issue—all numbers in the dataset were registering as strings instead of numeric values. Thus, we couldn't calculate anything meaningful with these values, and our next step was to change the mode of columns that incorrectly described numeric values as strings. This issue was fixed by highlighting all affected columns' values in the cleaned CSV file and then changing the mode from 'general' to numeric. After this fix, our dataset was properly cleaned and ready for analysis.
 
 \section{4  Correlation Analysis}
 The dataset used for analysis contains a myriad of characteristics about our population, such as the following: the gender, geography, and socioeconomic status of young adults in these developing countries. Consequently, we felt it to be appropriate to include several data visualizations depicting these characteristics and the corresponding ability to complete technological challenges. 
@@ -122,25 +122,24 @@ Figure 2 - Regression Line between Copying a File and Using a Copy and Paste Too
 
 As seen in the figures above, we can see that there is a very high correlation ($R^2$ value greater than $0.90$) between certain skills. This could be sufficient to show that there is evidence in favor of the claim that bad performance on a task implies bad performance on the rest of the tasks and that good performance on a task implies good performance on the rest of the tasks. However, we cannot make that conclusion from just a few observations, so we must explore the correlation between all tasks and explore the median correlation between any two tasks.
 
-To test the aforementioned claim, we construct a pair-wise correlation matrix below illustrating the relationship between performances on different tasks and calculated a median correlation coefficient of 0.890 and a minimum of 0.737, which on average, indicates a strong positive linear relationship between tasks:
+To test the aforementioned claim, we construct a pair-wise correlation matrix below illustrating the relationship between performances on different tasks and calculated a median correlation coefficient of 0.890 and a minimum of 0.737, which on average, indicates a strong positive linear relationship between all tasks.
 
-```{r, echo = F, message = F, warning = F}
+We can further highlight the correlation between each task, a colorful visual was created that represents the correlation coefficients as blue numbers that are darker the closer a correlation coefficient is to 1. This visual is intended to help the viewer determine which skills tend to correlate with other skills:
+
+\newpage
+
+
+
+```{r, echo = F}
 trimmedData = select(FurtherCleanedData, -1:-5, -21,-22,-23)
 correlationMatTrimmed <- trimmedData[,1:9]
 correlationMatTrimmed <- cor(correlationMatTrimmed)
 
 
-stargazer(correlationMatTrimmed, type="text", title="Pairwise Correlation Results", out="table2.txt")
+corrplot(correlationMatTrimmed, method = "number", type = "full", addgrid.col = TRUE, tl.cex = 0.99, tl.col = "brown", cl.pos = "n")
 ```
 \begin{center}
-Table 2 - Visualization depicting a matrix that illustrates the various correlations (using the R values) between each of the skills in the original dataset.
-\end{center}
-
-```{r, echo = F}
-corrplot(correlationMatTrimmed, method = "pie", type = "upper")
-```
-\begin{center}
-Figure 3 - To further highlight the correlation between each task, a colorful visual was created that represents the correlation coefficients as pie charts that are darker the closer a correlation coefficient is to 1 or -1. This visual is intended to help the viewer determine which skills tend to correlate with other skills.
+Figure 3 - Visualization depicting a matrix that illustrates the various correlations (using the R values) between each of the skills in the original dataset. 
 \end{center}
 
 The visualizations above show skill pairs that are strongly correlated with each other, including **C1** and **C8** (copying/moving folders and transferring files to different devices), **C7** and **C4** (using formulas in a spreadsheet and creating an audio/visual presentation), **C1** and **C2** (copying/moving folders and using copy-paste), and **C7** and **C3** (creating an audio visual presentation and using multimedia attachments in an email).    
